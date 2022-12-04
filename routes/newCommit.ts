@@ -2,7 +2,7 @@ import { Request, Response, Router } from 'express';
 import { githubCommit } from '../types';
 import { EmbedBuilder, APIEmbedField } from 'discord.js';
 import dotenv from 'dotenv';
-import { discordWebhook } from '../axios/api';
+import axios from 'axios';
 export const newCommit: Router = Router();
 dotenv.config();
 
@@ -30,9 +30,16 @@ newCommit.post('/newCommit', (req: Request, res: Response) => {
         .addFields(fields)
         .setFooter({ text: (new Date()).getDate() + '/' + (new Date()).getMonth() + '/' + (new Date()).getFullYear() })
 
-    try {
-        discordWebhook.post(`/${process.env.WEBHOOK_URL}`, { embeds: embed });
-    } catch (e) {
-        console.error(e);
+    const options = {
+        method: 'POST',
+        url: process.env.WEBHOOK_URL,
+        headers: { 'Content-Type': 'application/json' },
+        data: { embeds: [embed] }
     }
+
+    axios.request(options).then(function (response) {
+        console.log(response.data);
+    }).catch(function (error) {
+        console.error(error);
+    });
 });

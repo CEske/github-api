@@ -7,7 +7,7 @@ exports.newCommit = void 0;
 const express_1 = require("express");
 const discord_js_1 = require("discord.js");
 const dotenv_1 = __importDefault(require("dotenv"));
-const api_1 = require("../axios/api");
+const axios_1 = __importDefault(require("axios"));
 exports.newCommit = (0, express_1.Router)();
 dotenv_1.default.config();
 exports.newCommit.post('/newCommit', (req, res) => {
@@ -30,10 +30,15 @@ exports.newCommit.post('/newCommit', (req, res) => {
         .setDescription(chgMessage)
         .addFields(fields)
         .setFooter({ text: (new Date()).getDate() + '/' + (new Date()).getMonth() + '/' + (new Date()).getFullYear() });
-    try {
-        api_1.discordWebhook.post(`/${process.env.WEBHOOK_URL}`, { embeds: embed });
-    }
-    catch (e) {
-        console.error(e);
-    }
+    const options = {
+        method: 'POST',
+        url: process.env.WEBHOOK_URL,
+        headers: { 'Content-Type': 'application/json' },
+        data: { embeds: [embed] }
+    };
+    axios_1.default.request(options).then(function (response) {
+        console.log(response.data);
+    }).catch(function (error) {
+        console.error(error);
+    });
 });
