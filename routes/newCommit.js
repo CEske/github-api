@@ -31,9 +31,9 @@ exports.newCommit.post('/newCommit', (req, res) => {
         .addFields(fields)
         .setFooter({ text: (new Date()).getDate() + '/' + (new Date()).getMonth() + '/' + (new Date()).getFullYear() });
     try {
-        api_1.discordWebhook.post(`/${process.env.WEBHOOK_URL}`, { embeds: embed });
+        api_1.discordWebhook.post(`/${process.env.WEBHOOK_URL}`, { embeds: [embed] });
     }
     catch (e) {
-        console.error(e.data);
+        console.error(e);
     }
 });
