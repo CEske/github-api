@@ -7,7 +7,6 @@ exports.newCommit = void 0;
 const express_1 = require("express");
 const discord_js_1 = require("discord.js");
 const dotenv_1 = __importDefault(require("dotenv"));
-const axios_1 = __importDefault(require("axios"));
 exports.newCommit = (0, express_1.Router)();
 dotenv_1.default.config();
 exports.newCommit.post('/newCommit', (req, res) => {
@@ -25,20 +24,11 @@ exports.newCommit.post('/newCommit', (req, res) => {
         { name: 'Modified files', value: modifiedFiles.toString(), inline: true },
         { name: 'Removed files', value: removedFiles.toString(), inline: true },
     ];
+    const webhookClient = new discord_js_1.WebhookClient({ url: process.env.WEBHOOK_URL || 'null' });
     const embed = new discord_js_1.EmbedBuilder()
         .setAuthor({ name: process.env.SERVER_NAVN || 'UKENDT', iconURL: process.env.SERVER_LOGO || undefined })
         .setDescription(chgMessage)
         .addFields(fields)
         .setFooter({ text: (new Date()).getDate() + '/' + (new Date()).getMonth() + '/' + (new Date()).getFullYear() });
-    const options = {
-        method: 'POST',
-        url: process.env.WEBHOOK_URL,
-        headers: { 'Content-Type': 'application/json' },
-        data: { embeds: [embed] }
-    };
-    axios_1.default.request(options).then(function (response) {
-        console.log(response.data);
-    }).catch(function (error) {
-        console.error(error);
-    });
+    webhookClient.send({ embeds: [embed] });
 });

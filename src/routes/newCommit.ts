@@ -1,13 +1,12 @@
 import { Request, Response, Router } from 'express';
-import { githubCommit } from '../types';
-import { EmbedBuilder, APIEmbedField } from 'discord.js';
+import { GithubCommit } from '../types';
+import { EmbedBuilder, APIEmbedField, WebhookClient } from 'discord.js';
 import dotenv from 'dotenv';
-import axios from 'axios';
 export const newCommit: Router = Router();
 dotenv.config();
 
 newCommit.post('/newCommit', (req: Request, res: Response) => {
-    const totalCommits: Array<githubCommit> = req.body['commits']; 
+    const totalCommits: Array<GithubCommit> = req.body['commits']; 
     let modifiedFiles: number = 0, addedFiles: number = 0, removedFiles: number = 0;
     let chgMessage: string = '';
 
@@ -24,22 +23,12 @@ newCommit.post('/newCommit', (req: Request, res: Response) => {
         { name: 'Removed files', value: removedFiles.toString(), inline: true },
     ]
 
+    const webhookClient = new WebhookClient( { url: process.env.WEBHOOK_URL || 'null' } );
     const embed: EmbedBuilder = new EmbedBuilder()
         .setAuthor({ name: process.env.SERVER_NAVN || 'UKENDT', iconURL: process.env.SERVER_LOGO || undefined })
         .setDescription(chgMessage)
         .addFields(fields)
         .setFooter({ text: (new Date()).getDate() + '/' + (new Date()).getMonth() + '/' + (new Date()).getFullYear() })
 
-    const options = {
-        method: 'POST',
-        url: process.env.WEBHOOK_URL,
-        headers: { 'Content-Type': 'application/json' },
-        data: { embeds: [embed] }
-    }
-
-    axios.request(options).then(function (response) {
-        console.log(response.data);
-    }).catch(function (error) {
-        console.error(error);
-    });
+    webhookClient.send({ embeds: [embed] });
 });
