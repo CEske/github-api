@@ -33,6 +33,6 @@ newCommit.post('/newCommit', (req: Request, res: Response) => {
     try {
         discordWebhook.post(`/${process.env.WEBHOOK_URL}`, { embeds: embed });
     } catch (e) {
-        console.error(e);
+        console.error(e.data);
     }
 });

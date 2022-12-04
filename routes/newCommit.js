@@ -34,6 +34,6 @@ exports.newCommit.post('/newCommit', (req, res) => {
         api_1.discordWebhook.post(`/${process.env.WEBHOOK_URL}`, { embeds: embed });
     }
     catch (e) {
-        console.error(e);
+        console.error(e.data);
     }
 });
