@@ -7,8 +7,8 @@ exports.newCommit.post('/newCommit', (req, res) => {
     const { totalCommits } = req.body['commits'];
     // let modifiedFiles: Number, addedFiles: Number, removedFiles: Number = 0;
     // let chgMessage: String = '';
-    // console.log(totalCommits, typeof(totalCommits));
-    console.log(req.body['commits']);
+    console.log(totalCommits, typeof (totalCommits));
+    // console.log(req.body['commits']);
     // totalCommits.forEach( function(commit: Array<githubCommit>) {
     //     console.log(commit)
     // });
