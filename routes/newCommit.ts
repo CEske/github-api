@@ -16,7 +16,7 @@ interface githubCommit {
 }
 
 newCommit.post('/newCommit', (req: Request, res: Response) => {
-    const { totalCommits } = req.body['commits']; 
+    const totalCommits: Array<githubCommit> = req.body['commits']; 
     // let modifiedFiles: Number, addedFiles: Number, removedFiles: Number = 0;
     // let chgMessage: String = '';
 
