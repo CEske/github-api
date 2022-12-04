@@ -20,7 +20,9 @@ newCommit.post('/newCommit', (req: Request, res: Response) => {
     // let modifiedFiles: Number, addedFiles: Number, removedFiles: Number = 0;
     // let chgMessage: String = '';
 
-    totalCommits.forEach( function(commit: Array<githubCommit>) {
-        console.log(commit)
-    });
+    console.log(totalCommits, typeof(totalCommits));
+
+    // totalCommits.forEach( function(commit: Array<githubCommit>) {
+    //     console.log(commit)
+    // });
 });
