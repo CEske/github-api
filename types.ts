@@ -1,7 +1,7 @@
 export interface githubCommit {
     added: Array<String>,
     author: Object,
-    committer: Object,
+    committer: githubCommiterObject,
     distinct: Boolean,
     id: String,
     message: String,
@@ -10,4 +10,11 @@ export interface githubCommit {
     timestamp: String,
     tree_id: String,
     url: String
+}
+
+interface githubCommiterObject {
+    date: String,
+    email: String,
+    name: String,
+    username: String
 }
