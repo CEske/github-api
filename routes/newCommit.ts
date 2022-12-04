@@ -1,4 +1,5 @@
 import {Request, Response, Router} from 'express';
+import { EmbedBuilder } from 'discord.js';
 export const newCommit: Router = Router();
 
 interface githubCommit {
@@ -17,13 +18,10 @@ interface githubCommit {
 
 newCommit.post('/newCommit', (req: Request, res: Response) => {
     const totalCommits: Array<githubCommit> = req.body['commits']; 
-    // let modifiedFiles: Number, addedFiles: Number, removedFiles: Number = 0;
-    // let chgMessage: String = '';
+    let modifiedFiles: Number, addedFiles: Number, removedFiles: Number = 0;
+    let chgMessage: String = '';
 
-    console.log(totalCommits, typeof(totalCommits));
-    // console.log(req.body['commits']);
-
-    // totalCommits.forEach( function(commit: Array<githubCommit>) {
-    //     console.log(commit)
-    // });
+    totalCommits.forEach( function(commit: Object) {
+        console.log(commit)
+    });
 });
